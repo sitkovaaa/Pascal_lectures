@@ -4,34 +4,42 @@ Program vec_obj;
 uses
     SysUtils, Math;
 
+const
+  Size_N = 190000000;
+
 type
-    vec3 = object
-		private
-			x,y,z : real;
-		public
-			constructor create(ax, ay, az : real);
-			constructor copy(arg_r : vec3);
-			constructor zero();
-			function sum(arg_r : vec3) : vec3;
-			function dot_product(arg_r : vec3) : real;
-			procedure print_value();
+    arr700mb = array [0..Size_N] of integer;
+    
+    Array_obj = object
+    private
+      data : ^arr700mb;
+    public
+      constructor create_random();
+      destructor del();
     end;
 
+constructor Array_obj.create_random();
+var
+  i : integer;
+begin
+  new(data);
+  for i := 0 to Size_N do
+    data^[i] := RandomRange(-1000, 1000);
+end;
 
+destructor Array_obj.del();
+begin
+  dispose(data);
+end;
 
 var
-	a,b,c : vec3;
+  a : Array_obj;
 Begin
-    a.create(1,2,3);
-	a.print_value;
-	
-    b.create(1,1,10);
-	b.print_value;
-	
-	c := b.sum(a);
-	c.print_value;
-	
-	writeln(a.dot_product(b):0:3);
-	
-	writeln('OK!')
+  a.create_random;
+  a.del;
+  
+  a.create_random;
+  a.del;
+  
+  writeln('OK!')
 End.
